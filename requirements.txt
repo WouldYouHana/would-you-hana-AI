@@ -1,0 +1,9 @@
+openai==0.28
+pandas
+numpy
+faiss-cpu
+pickle-mixin
+fastapi
+uvicorn
+pydantic
+python-dotenv
