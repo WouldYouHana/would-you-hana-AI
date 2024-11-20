@@ -13,3 +13,6 @@
 4. **라이브러리 설치**
    ```bash
    pip install -r requirements.txt
+5. cd backend
+```bash
+   uvicorn main:app --reload
