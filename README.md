@@ -5,7 +5,11 @@
 
 ## 사용법
 - config 폴더 생성
-- .env 생성(API키 세팅)
+- .env 생성 (API키 세팅) -> hana = OPEN AI APIkey
+- 가상환경 생성
+- pip install -r requirements.txt (라이브러리 설치)
+- cd backend -> uvicorn main:app --reload (서버 실행)
 
 ## API
 - OPEN AI : http://platform.openai.com/
+
