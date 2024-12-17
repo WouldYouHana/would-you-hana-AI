@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from chat import get_answer
+from hot_keyword import load_user_dictionary, extract_popular_keywords, fetch_data_from_db, save_keywords_to_db
 
 
 app = FastAPI()
@@ -27,5 +28,35 @@ async def answer_question(request: QuestionRequest):
     try:
         answer = get_answer(request.question)
         return {"question": request.question, "answer": answer}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# 인기 키워드 추출 API 엔드포인트
+@app.get("/hot_keywords")
+async def extract_keywords():
+    try:
+        # 사용자 사전 로드
+        user_dict_path = '../data/user_dict.txt'
+        user_dict = load_user_dictionary(user_dict_path)
+
+        if not user_dict:
+            raise HTTPException(status_code=500, detail="사용자 사전을 로드하지 못했습니다.")
+
+        # DB에서 데이터 가져오기
+        data = fetch_data_from_db()
+
+        if not data:
+            raise HTTPException(status_code=500, detail="DB에서 데이터를 가져올 수 없습니다.")
+
+        # 인기 키워드 추출
+        popular_keywords = extract_popular_keywords(data, user_dict)
+
+        # DB에 인기 키워드 저장
+        save_keywords_to_db(popular_keywords)
+
+        # JSON 형식으로 결과 출력
+        return {"popular_keywords": popular_keywords}
+
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
