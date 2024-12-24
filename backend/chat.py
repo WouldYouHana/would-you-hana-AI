@@ -10,9 +10,9 @@ load_dotenv(dotenv_path="../config/.env")
 openai.api_key = os.getenv("hana")
 
 # FAQ 데이터와 임베딩 로드
-with open("../data/Processed_Data/faq_data2.pkl", "rb") as f:
+with open("/app/data/Processed_Data/faq_data2.pkl", "rb") as f:
     faq_data_pd = pickle.load(f)
-with open("../data/Processed_Data/faq_embeddings2.pkl", "rb") as f:
+with open("/app/data/Processed_Data/faq_embeddings2.pkl", "rb") as f:
     faq_embeddings = pickle.load(f)
 
 # FAISS 인덱스 초기화 및 임베딩 추가
