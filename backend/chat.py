@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 import os
 
 # OpenAI API 키 설정
-load_dotenv(dotenv_path="../config/.env")
+load_dotenv(dotenv_path="/app/config/.env")
 openai.api_key = os.getenv("hana")
 
 # FAQ 데이터와 임베딩 로드
