@@ -37,7 +37,7 @@ async def answer_question(request: QuestionRequest):
 async def extract_keywords():
     try:
         # 사용자 사전 로드
-        user_dict_path = '../data/user_dict.txt'
+        user_dict_path = '/app/data/user_dict.txt'
         user_dict = load_user_dictionary(user_dict_path)
 
         if not user_dict:
