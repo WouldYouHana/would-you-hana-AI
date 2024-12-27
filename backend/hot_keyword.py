@@ -5,7 +5,7 @@ from collections import Counter
 
 # DB 연결 설정
 db_config = {
-    'host': 'localhost',
+    'host': '172.18.0.3',
     'user': 'scott',
     'password': 'tiger',
     'database': 'db'
