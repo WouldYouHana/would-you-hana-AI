@@ -6,8 +6,8 @@ from collections import Counter
 # DB 연결 설정
 db_config = {
     'host': 'localhost',
-    'user': 'root',
-    'password': 'root1234!',
+    'user': 'scott',
+    'password': 'tiger',
     'database': 'db'
 }
 
