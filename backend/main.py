@@ -43,17 +43,24 @@ async def extract_keywords():
         if not user_dict:
             raise HTTPException(status_code=500, detail="사용자 사전을 로드하지 못했습니다.")
 
-        # DB에서 데이터 가져오기
-        data = fetch_data_from_db()
+        # DB에서 locations 데이터 가져오기
+        locations = fetch_location_from_db()
 
-        if not data:
-            raise HTTPException(status_code=500, detail="DB에서 데이터를 가져올 수 없습니다.")
+        if not locations:
+            raise HTTPException(status_code=500, detail="DB에서 locations 데이터를 가져올 수 없습니다.")
 
-        # 인기 키워드 추출
-        popular_keywords = extract_popular_keywords(data, user_dict)
+        for location in locations:
+            # DB에서 데이터 가져오기
+            data = fetch_data_from_db(location)
 
-        # DB에 인기 키워드 저장
-        save_keywords_to_db(popular_keywords)
+            if not data:
+                raise HTTPException(status_code=500, detail="DB에서 데이터를 가져올 수 없습니다.")
+
+            # 인기 키워드 추출
+            popular_keywords = extract_popular_keywords(data, user_dict)
+
+            # DB에 인기 키워드 저장
+            save_keywords_to_db(popular_keywords, location)
 
         # JSON 형식으로 결과 출력
         return {"popular_keywords": popular_keywords}
