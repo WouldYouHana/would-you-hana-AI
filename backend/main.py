@@ -2,10 +2,13 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from chat import get_answer
-from hot_keyword import load_user_dictionary, extract_popular_keywords, fetch_data_from_db, save_keywords_to_db
+from hot_keyword import load_user_dictionary, extract_popular_keywords, fetch_location_from_db, fetch_data_from_db, save_keywords_to_db, start_scheduler
 
 
 app = FastAPI()
+
+# 스케줄러 시작
+start_scheduler()
 
 app.add_middleware(
     CORSMiddleware,
@@ -43,17 +46,24 @@ async def extract_keywords():
         if not user_dict:
             raise HTTPException(status_code=500, detail="사용자 사전을 로드하지 못했습니다.")
 
-        # DB에서 데이터 가져오기
-        data = fetch_data_from_db()
+        # DB에서 locations 데이터 가져오기
+        locations = fetch_location_from_db()
 
-        if not data:
-            raise HTTPException(status_code=500, detail="DB에서 데이터를 가져올 수 없습니다.")
+        if not locations:
+            raise HTTPException(status_code=500, detail="DB에서 locations 데이터를 가져올 수 없습니다.")
 
-        # 인기 키워드 추출
-        popular_keywords = extract_popular_keywords(data, user_dict)
+        for location in locations:
+            # DB에서 데이터 가져오기
+            data = fetch_data_from_db(location)
 
-        # DB에 인기 키워드 저장
-        save_keywords_to_db(popular_keywords)
+            if not data:
+                raise HTTPException(status_code=500, detail="DB에서 데이터를 가져올 수 없습니다.")
+
+            # 인기 키워드 추출
+            popular_keywords = extract_popular_keywords(data, user_dict)
+
+            # DB에 인기 키워드 저장
+            save_keywords_to_db(popular_keywords, location)
 
         # JSON 형식으로 결과 출력
         return {"popular_keywords": popular_keywords}

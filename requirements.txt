@@ -9,3 +9,5 @@ pydantic
 python-dotenv
 konlpy
 pymysql
+apscheduler
+pytz
