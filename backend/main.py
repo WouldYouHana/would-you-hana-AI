@@ -2,11 +2,13 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from chat import get_answer
-from hot_keyword import load_user_dictionary, extract_popular_keywords, fetch_location_from_db, fetch_data_from_db, save_keywords_to_db, start_scheduler
+from hot_keyword import load_user_dictionary, extract_popular_keywords, fetch_location_from_db, fetch_data_from_db, update_popular_keywords, save_keywords_to_db, start_scheduler
 
 
 app = FastAPI()
 
+# 최초 실행시 키워드 추출
+update_popular_keywords()
 # 스케줄러 시작
 start_scheduler()
 

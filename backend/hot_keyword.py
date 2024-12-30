@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO)
 
 # DB 연결 설정
 db_config = {
-    'host': '172.18.0.3',
+    'host': '172.18.0.2',
     'user': 'scott',
     'password': 'tiger',
     'database': 'db'
